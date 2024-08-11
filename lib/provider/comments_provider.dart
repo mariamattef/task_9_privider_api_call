@@ -17,7 +17,7 @@ class CommentProvider extends ChangeNotifier {
 
   getcomments() async {
     _allCommentsService
-        .getAllComments(id: posts!.isNotEmpty ? posts![0].id : 1)
+        .getAllComments(id: posts ?? [].map((post) => post.id))
         .then((value) {
       comments = value;
       isLoading = false;

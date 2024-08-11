@@ -16,24 +16,32 @@ class _DetailsPostPageState extends State<DetailsPostPage> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<CommentProvider>(context);
-
     provider.getcomments();
 
     return SafeArea(
-      child: Scaffold(
-          appBar: AppBar(
-            title: const Text(
-              'Details Post',
-              style: TextStyle(fontSize: 25),
-            ),
-            backgroundColor: Colors.blue,
-          ),
-          body: provider.isLoading
-              ? getLoadingUi()
-              : provider.errorMassege.isNotEmpty
-                  ? getErrorUi(provider.errorMassege)
-                  : getPodyUi(provider.comments!)),
-    );
+        child: Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Details Post',
+          style: TextStyle(fontSize: 25),
+        ),
+        backgroundColor: Colors.blue,
+      ),
+      body: provider.isLoading
+          ? getLoadingUi()
+          : provider.errorMassege.isNotEmpty
+              ? getErrorUi(provider.errorMassege)
+              : ListView.builder(
+                  itemCount: provider.comments!.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(provider.comments![index].email.toString()),
+                    );
+                  },
+                ),
+
+      // getPodyUi(provider.comments ?? [])),
+    ));
   }
 
   Widget getLoadingUi() {
@@ -91,7 +99,7 @@ class _DetailsPostPageState extends State<DetailsPostPage> {
         return ListTile(
           title: Text(comment.name.toString()),
           subtitle: Text(comment.email.toString()),
-          trailing: Text(widget.id.toString()),
+          // trailing: Text(widget.id.toString()),
         );
       },
     );
